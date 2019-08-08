@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-size: 18px;
+}
+
+button {
+    font-size: inherit;
+    padding: 3px 10px;
+}
+
+.page {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.page>aside {
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2)
+}
+
+.page>aside>.upper {
+    display: flex;
+    flex-direction: column;
+}
+
+.page>aside>.upper>ul>li {
+    margin: 30px 0;
+}
+
+.page>aside>.down {
+    padding: 20px 0
+}
+
+.page>main {
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.resume {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.resume section {
+    margin: 20px 0;
+
+}
+
+.resume h1,
+h2 {
+    text-align: center;
+    margin-top:30px;
+    margin-bottom: 20px;
+}
+
+.resume>.profile>p {
+    padding: 10px;
+    text-align: center
+}
+
+.resume>.skill>ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.resume>.skill>ul>li {
+    border: 1px solid #ddd;
+    width: 48%;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.project>ol>li {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 0;
+    border: 1px solid #ddd;
+}
+
+.project>ol>li>header {
+    display: flex;
+    justify-content: space-between;
+    margin:10px 0;
+}
+
+.project>ol>li>header>.start{
+    display: flex;
+}
+.project>ol>li>header>.start>.name{
+    margin-right: 0.5em;
+}

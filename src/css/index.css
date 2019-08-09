@@ -116,3 +116,6 @@ h2 {
 .project>ol>li>header>.start>.name{
     margin-right: 0.5em;
 }
+div[v-cloak] {
+    display: none ;
+  }

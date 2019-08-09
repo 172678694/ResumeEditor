@@ -36,12 +36,13 @@
                 </ul>
             </div>
             <div class="down">
-                <button>登出</button>
+                <button @click="onLogOut">登出</button>
             </div>
         </aside>
         <main>
             <div class="resume">
                 <section class="profile">
+                    {{resume}}
                     <h1><editable-span v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span></h1>
                     <p>应聘职位：<editable-span v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span></p>
                     <p class="description">
@@ -131,49 +132,49 @@
                 </section>
             </div>
         </main>
-        <div v-show="loginVisible" class="login">
-            <form class="loginForm">
+        <div v-show="logInVisible" class="logIn" v-cloak>
+            <form class="logInForm" @submit.prevent="onLogIn">
                     <h1>登录</h1>
                     <div class="row">
-                        <label>邮箱
-                            <input type="text" name="userName">
+                        <label>用户名
+                            <input type="text" name="userName" v-model="logIn.userName">
                         </label>
                     </div>
                     <div class="row">
                         <label>密码
-                            <input type="password" name="password">
+                            <input type="password" name="password" v-model="logIn.password">
                         </label>
                     </div>
                     <div class="row">
                         <input type="submit" value="提交">
                     </div>
-                    <a @click="loginVisible=false">关闭</a>
-                    <a @click="signUpVisible=true;loginVisible=false">注册</a>
+                    <a @click="logInVisible=false">关闭</a>
+                    <a @click="signUpVisible=true;logInVisible=false">注册</a>
             </form>
         </div>
-        <div v-show="signUpVisible" class="signUp">
-            <form class="signUpForm">
+        <div v-show="signUpVisible" class="signUp" v-cloak>
+            <form class="signUpForm"  @submit.prevent="onSignUp">
                 <h1>注册</h1>
                 <div class="row">
                     <label>邮箱
-                        <input type="text" name="userName">
+                        <input type="text" name="userName" v-model="signUp.email">
                     </label>
                 </div>
                 <div class="row">
                     <label>密码
-                        <input type="password" name="password">
+                        <input type="password" name="password" v-model="signUp.password">
                     </label>
                 </div>
                 <div class="row">
                         <label>确认密码
-                            <input type="password" name="password_confirmation">
+                            <input type="password" name="password_confirmation" v-model="signUp.password_confirmation" >
                         </label>
                 </div>
                 <div class="row">
-                    <input type="submit" value="提交">
+                    <button type="submit">提交</button>
                 </div>
                 <a @click="signUpVisible=false">关闭</a>
-                <a @click="signUpVisible=false;loginVisible=true">登录</a>
+                <a @click="signUpVisible=false;logInVisible=true">登录</a>
             </form>
         </div>
     </div>

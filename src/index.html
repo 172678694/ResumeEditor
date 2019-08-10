@@ -36,13 +36,13 @@
                 </ul>
             </div>
             <div class="down">
-                <button @click="onLogOut">登出</button>
+                <button @click="onLogOut" v-show="!!currentUser.objectId">登出</button>
             </div>
         </aside>
         <main>
             <div class="resume">
+                {{currentUser}}
                 <section class="profile">
-                    {{resume}}
                     <h1><editable-span v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span></h1>
                     <p>应聘职位：<editable-span v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span></p>
                     <p class="description">
@@ -58,23 +58,10 @@
                 <section class="skill">
                     <h2>技能</h2>
                     <ul>
-                        <li>
-                            <div class="name">静态页面制作</div>
-                            <span class="description">完美实现设计稿</span>
+                        <li v-for="skill in skills">
+                            <div class="name">{{skill.name}}</div>
+                            <span class="description">{{skill.description}}</span>
                         </li>
-                        <li>
-                            <div class="name">静态页面制作</div>
-                            <span class="description">完美实现设计稿</span>
-                        </li>
-                        <li>
-                            <div class="name">静态页面制作</div>
-                            <span class="description">完美实现设计稿</span>
-                        </li>
-                        <li>
-                            <div class="name">静态页面制作</div>
-                            <span class="description">完美实现设计稿</span>
-                        </li>
-
                     </ul>
                 </section>
                 <section class="project">

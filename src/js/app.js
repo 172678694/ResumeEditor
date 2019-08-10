@@ -1,4 +1,4 @@
-new Vue({
+var app=new Vue({
     el: '#app',
     
     data: {
@@ -8,7 +8,13 @@ new Vue({
            jobTitle:'前端工程师',
             gender:'女',
             email:'172678694@qq.com',
-            phone:'15603002818'
+            phone:'15603002818',
+            skills:[
+              {name:'请填写技能名称',description:'请填写技能描述'},
+              {name:'请填写技能名称',description:'请填写技能描述'},
+              {name:'请填写技能名称',description:'请填写技能描述'},
+              {name:'请填写技能名称',description:'请填写技能描述'}
+            ]
         },
         logInVisible:false,
         signUpVisible:false,
@@ -20,28 +26,35 @@ new Vue({
         logIn:{
           userName:'',
           password:''
+        },
+        currentUser:{
+          objectId:'',
+          email:''
         }
-
     },
     methods:{
       onEdit(key,value){
         this.resume[key]=value
       },
       onClickSave(){
-        var currentUser = AV.User.current()
+        let currentUser = AV.User.current()
+        console.log(currentUser)
         if (!currentUser) {
           this.logInVisible=true
         } else {
-          console.log(currentUser)
-          this.saveResume(currentUser)
+          this.saveResume()
         } 
       },
       //onclickSave
-      saveResume(user){
-        console.log(this.resume)
-        var user = AV.Object.createWithoutData('User', user.id)
+      saveResume(){
+        let currentUser = AV.User.current().toJSON()
+        let user = AV.Object.createWithoutData('User', currentUser.objectId)
         user.set('resume', this.resume)
-        user.save();
+        user.save().then(()=>{
+          alert('保存成功')
+        },(error)=>{
+            alert('保存失败')
+        })
       },
       onSendVCode(){
         AV.Cloud.requestSmsCode(this.signup.phone).then(function(sucess){},function(error){console.log(error)})
@@ -49,34 +62,58 @@ new Vue({
       onLogIn(){
         AV.User.logIn(this.logIn.userName, this.logIn.password).then((user)=>{
           // 登录成功
+          alert('登录成功')
+          let currentUser=user.toJSON()
+          this.currentUser.objectId=currentUser.objectId
+          this.currentUser.email=currentUser.email
           this.logInVisible=false
-        }, function (error) {
+        }, (error)=>{
           // 登录失败（可能是密码错误）
           if(error.code===211){
             alert('邮箱不存在')
           }else if(error.code===210){
             alert('邮箱和密码不匹配')
           }
-        });
+        })
       },
       onSignUp(e){
-      var user = new AV.User();
+      let user = new AV.User();
       user.setUsername(this.signUp.email)
       user.setPassword(this.signUp.password)
       user.setEmail(this.signUp.email);
-      user.signUp().then(function (user) {
+      user.signUp().then((user)=>{
         console.log('注册成功。objectId：' + user.id)
-      }, function (error) {
+        alert('注册成功')
+        this.signUpVisible=false
+        currentUser=user.toJSON()
+        this.currentUser.objectId=currentUser.objectId
+        this.currentUser.email=currentUser.email
+      }, (error)=>{
+        console.dir(error)
         // 注册失败（通常是因为用户名已被使用）
+        if(error.code===203){
+          alert(error.rawMessage)
+        }
       })
       },
       onLogOut(){
-        var currentUser = AV.User.current()
-        if(currentUser){
           AV.User.logOut()
-          alert('登出成功')
-        }
+          alert('注销成功')
+          window.location.reload()
+      },
+      getResume(){
+        var query = new AV.Query('User')
+        query.get(this.currentUser.objectId).then((user)=> {
+          let resume=user.toJSON().resume
+          Object.assign(this.resume,resume)
+        })
       }
     }
   })
-    
+let currentUser=AV.User.current()
+if(currentUser){
+  currentUser = currentUser.toJSON()
+  app.currentUser.objectId=currentUser.objectId
+  app.currentUser.email=currentUser.email
+  app.getResume()
+}

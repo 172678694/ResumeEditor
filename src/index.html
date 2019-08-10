@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/editableSpan.css">
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="./css/shareLink.css">
     <script src="//at.alicdn.com/t/font_1344485_msxeec4oqg.js"></script>
     <style>
     input{
@@ -26,7 +27,7 @@
                         <button @click="onClickSave">保存</button>
                     </li>
                     <li>
-                        <button>分享</button>
+                        <button @click="shareVisible=true">分享</button>
                     </li>
                     <li>
                         <button>打印</button>
@@ -42,7 +43,6 @@
         </aside>
         <main>
             <div class="resume">
-                {{resume}}
                 <section class="profile">
                     <h1><editable-span v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span></h1>
                     <p>应聘职位：<editable-span v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span></p>
@@ -64,7 +64,7 @@
                             <div class="description" >
                                 <editable-span v-bind:value="skill.description"  v-on:edit="onEdit(`skills[${index}].description`,$event)" ></editable-span>
                             </div>
-                            <span class="removeSkill" v-if="index>3" @click="removeSkill(index)" >删除</span>
+                            <span class="remove" v-if="index>3" @click="removeSkill(index)" >删除</span>
                         </li>
                     </ul>
                     <div class="addIcon" @click="addSkill">
@@ -76,56 +76,23 @@
                 <section class="project">
                     <h2>项目经历</h2>
                     <ol>
-                        <li>
+                        <li v-for="project,index in resume.projects">
                             <header>
                                 <div class="start">
-                                    <h3 class="name">个人简历</h3>
-                                    <span class="link">http://</span>
+                                    <h3 class="name">
+                                        <editable-span v-bind:value="project.name" v-on:edit="onEdit(`projects[${index}].name`,$event)" ></editable-span>  
+                                    </h3>
+                                    <span class="link"><editable-span v-bind:value="project.link" v-on:edit="onEdit(`projects[${index}].link`,$event)" ></editable-span>  </span>
                                 </div>
                                 <div class="end">
-                                    <span class="keyword">CSS3、jQuery、响应式</span>
+                                    <editable-span  class="keyword" v-bind:value="project.keyword" v-on:edit="onEdit(`projects[${index}].keyword`,$event)" ></editable-span>  
                                 </div>
                             </header>
-                            <p class="description">我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的</p>
-                        </li>
-                        <li>
-                            <header>
-                                <div class="start">
-                                    <h3 class="name">个人简历</h3>
-                                    <span class="link">http://</span>
-                                </div>
-                                <div class="end">
-                                    <span class="keyword">CSS3、jQuery、响应式</span>
-                                </div>
-                            </header>
-                            <p class="description">我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的</p>
-                        </li>
-                        <li>
-                            <header>
-                                <div class="start">
-                                    <h3 class="name">个人简历</h3>
-                                    <span class="link">http://</span>
-                                </div>
-                                <div class="end">
-                                    <span class="keyword">CSS3、jQuery、响应式</span>
-                                </div>
-                            </header>
-                            <p class="description">我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的</p>
-                        </li>
-                        <li>
-                            <header>
-                                <div class="start">
-                                    <h3 class="name">个人简历</h3>
-                                    <span class="link">http://</span>
-                                </div>
-                                <div class="end">
-                                    <span class="keyword">CSS3、jQuery、响应式</span>
-                                </div>
-                            </header>
-                            <p class="description">我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的</p>
+                            <p class="description"><editable-span v-bind:value="project.description" v-on:edit="onEdit(`projects[${index}].description`,$event)" ></editable-span></p>
+                            <span class="remove" v-if="index>1" @click="removeProject(index)" >删除</span>
                         </li>
                     </ol>
-                    <div class="addIcon" >
+                    <div class="addIcon" @click="addProject" >
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#icon-add"></use>
                             </svg>
@@ -177,6 +144,12 @@
                 <a @click="signUpVisible=false">关闭</a>
                 <a @click="signUpVisible=false;logInVisible=true">登录</a>
             </form>
+        </div>
+        <div v-show="shareVisible" class="shareLink">
+            <h2>请把下面链接分享给面试官</h2>
+            <textarea readonly>
+                {{shareLink}}
+            </textarea>
         </div>
     </div>
     <script src="../vendors/av-min.js"></script>

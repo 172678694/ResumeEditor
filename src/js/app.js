@@ -14,10 +14,17 @@ var app=new Vue({
               {name:'请填写技能名称',description:'请填写技能描述'},
               {name:'请填写技能名称',description:'请填写技能描述'},
               {name:'请填写技能名称',description:'请填写技能描述'}
+            ],
+            projects:[
+              {name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'},
+              {name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'},
+
             ]
         },
         logInVisible:false,
         signUpVisible:false,
+        shareVisible:false,
+        shareLink:'',
         signUp:{
           email:'',
           password:'',
@@ -33,6 +40,12 @@ var app=new Vue({
         }
     },
     methods:{
+      addProject(){
+        this.resume.projects.push({name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'})
+      },
+      removeProject(index){
+        this.resume.projects.splice(index,1)
+      },
       addSkill(){
         this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
       },
@@ -137,4 +150,5 @@ if(currentUser){
   app.currentUser.objectId=currentUser.objectId
   app.currentUser.email=currentUser.email
   app.getResume()
+  app.shareLink=location.origin+ location.pathname+'?user_id='+app.currentUser.objectId
 }

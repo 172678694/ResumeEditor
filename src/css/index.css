@@ -95,31 +95,41 @@ h2 {
     justify-content: space-between;
 }
 
-.resume>.skill>ul>li {
+.resume>.skill>ul>li{
     border: 1px solid #ddd;
     width: 48%;
     margin: 10px 0;
     padding: 10px;
     position: relative;
 }
-.resume>.skill>ul>li>.removeSkill{
+.resume>.skill>ul>li>.remove,
+.resume>.project>ol>li>.remove{
     display: none;
 }
-.resume>.skill>ul>li:hover>.removeSkill{
+.resume>.skill>ul>li:hover>.remove
+{
     display: block;
     position: absolute;
-    border: 1px solid #ddd;
+    border: 1px solid rgb(36, 15, 15);
     top:0;
     right: 0;
 }
-.project>ol>li {
+.resume>.project>ol>li:hover>.remove{
+    display: block;
+    position: absolute;
+    border: 1px solid rgb(36, 15, 15);
+    bottom:0;
+    right: 0;
+}
+.project>ol>li{
     display: flex;
     flex-direction: column;
     margin: 30px 0;
     border: 1px solid #ddd;
+    position: relative;
 }
 
-.project>ol>li>header {
+.project>ol>li>header{
     display: flex;
     justify-content: space-between;
     margin:10px 0;
@@ -128,12 +138,13 @@ h2 {
 .project>ol>li>header>.start{
     display: flex;
 }
+
 .project>ol>li>header>.start>.name{
     margin-right: 0.5em;
 }
 div[v-cloak] {
     display: none ;
-  }
+}
 .addIcon{
     text-align: center;
     

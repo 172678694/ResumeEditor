@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/editableSpan.css">
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/signup.css">
+    <script src="//at.alicdn.com/t/font_1344485_msxeec4oqg.js"></script>
     <style>
     input{
         border:none;
@@ -41,7 +42,7 @@
         </aside>
         <main>
             <div class="resume">
-                {{currentUser}}
+                {{resume}}
                 <section class="profile">
                     <h1><editable-span v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span></h1>
                     <p>应聘职位：<editable-span v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span></p>
@@ -58,11 +59,19 @@
                 <section class="skill">
                     <h2>技能</h2>
                     <ul>
-                        <li v-for="skill in skills">
-                            <div class="name">{{skill.name}}</div>
-                            <span class="description">{{skill.description}}</span>
+                        <li v-for="skill,index in resume.skills" style="position: relative;">
+                            <editable-span v-bind:value="skill.name"  v-on:edit="onEdit(`skills[${index}].name`,$event)" class="name"></editable-span>
+                            <div class="description" >
+                                <editable-span v-bind:value="skill.description"  v-on:edit="onEdit(`skills[${index}].description`,$event)" ></editable-span>
+                            </div>
+                            <span class="removeSkill" v-if="index>3" @click="removeSkill(index)" >删除</span>
                         </li>
                     </ul>
+                    <div class="addIcon" @click="addSkill">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-add"></use>
+                        </svg>
+                    </div>
                 </section>
                 <section class="project">
                     <h2>项目经历</h2>
@@ -116,6 +125,11 @@
                             <p class="description">我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的我是怎么做这个项目的</p>
                         </li>
                     </ol>
+                    <div class="addIcon" >
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-add"></use>
+                            </svg>
+                    </div>
                 </section>
             </div>
         </main>

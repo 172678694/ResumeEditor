@@ -10,7 +10,7 @@ var app=new Vue({
             email:'172678694@qq.com',
             phone:'15603002818',
             skills:[
-              {name:'请填写技能名称',description:'请填写技能描述'},
+              {name:'请填写技能名称',description:'请填写技能描述',index:''},
               {name:'请填写技能名称',description:'请填写技能描述'},
               {name:'请填写技能名称',description:'请填写技能描述'},
               {name:'请填写技能名称',description:'请填写技能描述'}
@@ -33,8 +33,29 @@ var app=new Vue({
         }
     },
     methods:{
+      addSkill(){
+        this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
+      },
+      removeSkill(index){
+        this.resume.skills.splice(index,1)
+      },
       onEdit(key,value){
-        this.resume[key]=value
+        console.log(key)
+        console.log(value)
+        let regex=/\[(\d+)\]/g //key=skills[0].name
+        key=key.replace(regex,(match,number)=>`.${number}`) //key=skills.0.name
+        let keys=key.split('.') //['skills','0','name']
+        console.log(keys)
+        let result=this.resume
+        for(let i=0;i<keys.length;i++){
+          //i=0 result=this.resume.skills
+          //i=1 result=this.resume.skills[0]
+          if(i===keys.length-1){
+            result[keys[i]]=value
+            console.log(result[keys[i]])
+          }
+          result=result[keys[i]]
+        }
       },
       onClickSave(){
         let currentUser = AV.User.current()

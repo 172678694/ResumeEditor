@@ -3,7 +3,7 @@ Vue.component('editable-span', {
     template: `
         <span class="editableSpan">
           <span v-show="!editing">{{value}}</span>
-          <input v-show="editing" type="text" v-bind:value="value" @input="triggerEdit" >
+          <input v-show="editing" type="text" v-bind:value="value" v-on:input="triggerEdit" >
           <button v-on:click="editing = !editing">edit</button>
         </span>
       `,

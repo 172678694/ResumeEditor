@@ -13,7 +13,12 @@ ol,
 ul {
     list-style: none;
 }
-
+.icon {
+       width: 1em; height: 1em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
 a {
     text-decoration: none;
     color: inherit;
@@ -95,8 +100,18 @@ h2 {
     width: 48%;
     margin: 10px 0;
     padding: 10px;
+    position: relative;
 }
-
+.resume>.skill>ul>li>.removeSkill{
+    display: none;
+}
+.resume>.skill>ul>li:hover>.removeSkill{
+    display: block;
+    position: absolute;
+    border: 1px solid #ddd;
+    top:0;
+    right: 0;
+}
 .project>ol>li {
     display: flex;
     flex-direction: column;
@@ -119,3 +134,13 @@ h2 {
 div[v-cloak] {
     display: none ;
   }
+.addIcon{
+    text-align: center;
+    
+}
+.addIcon>svg{
+    box-sizing: content-box;
+    border:1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+}

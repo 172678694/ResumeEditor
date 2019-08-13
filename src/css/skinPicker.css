@@ -1,0 +1,20 @@
+.skinPicker{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    min-width: 300px;
+    background:white;
+    
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4)
+}
+.skinPicker>.close{
+    position: absolute;
+    top:0;
+    right: 10px;
+}
+body.dark .skinPicker>.close{
+    color:black;
+}

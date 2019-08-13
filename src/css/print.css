@@ -1,0 +1,11 @@
+.page>aside{
+    display: none;
+}
+.page{
+    padding: 20px;
+
+}
+.skill>.addIcon,
+.project>.addIcon{
+display: none;
+}

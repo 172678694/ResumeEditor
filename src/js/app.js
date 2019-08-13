@@ -18,12 +18,12 @@ var app=new Vue({
             projects:[
               {name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'},
               {name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'},
-
             ]
         },
         logInVisible:false,
         signUpVisible:false,
         shareVisible:false,
+        skinPickerVisible:false,
         shareLink:'',
         signUp:{
           email:'',
@@ -34,12 +34,16 @@ var app=new Vue({
           userName:'',
           password:''
         },
-        currentUser:{
-          objectId:'',
-          email:''
-        }
+        currentUser:{},
+        mainClass:''
     },
     methods:{
+      setTheme(name){
+        document.body.className=name
+      },
+      print(){
+        window.print()
+      },
       addProject(){
         this.resume.projects.push({name:'项目名称',link:'http://',keyword:'请填写关键字',description:'请添加项目经历描述'})
       },
@@ -71,17 +75,16 @@ var app=new Vue({
         }
       },
       onClickSave(){
-        let currentUser = AV.User.current()
+        let currentUser = this.currentUser
         console.log(currentUser)
-        if (!currentUser) {
+        if (!currentUser.objectId) {
           this.logInVisible=true
         } else {
           this.saveResume()
         } 
       },
-      //onclickSave
       saveResume(){
-        let currentUser = AV.User.current().toJSON()
+        let currentUser = this.currentUser
         let user = AV.Object.createWithoutData('User', currentUser.objectId)
         user.set('resume', this.resume)
         user.save().then(()=>{
@@ -97,10 +100,11 @@ var app=new Vue({
         AV.User.logIn(this.logIn.userName, this.logIn.password).then((user)=>{
           // 登录成功
           alert('登录成功')
-          let currentUser=user.toJSON()
-          this.currentUser.objectId=currentUser.objectId
-          this.currentUser.email=currentUser.email
+          this.currentUser=user.toJSON()
           this.logInVisible=false
+          window.location.reload()
+          this.getResume(this.currentUser)
+
         }, (error)=>{
           // 登录失败（可能是密码错误）
           if(error.code===211){
@@ -120,8 +124,8 @@ var app=new Vue({
         alert('注册成功')
         this.signUpVisible=false
         currentUser=user.toJSON()
-        this.currentUser.objectId=currentUser.objectId
-        this.currentUser.email=currentUser.email
+        this.currentUser=currentUser
+      
       }, (error)=>{
         console.dir(error)
         // 注册失败（通常是因为用户名已被使用）
@@ -135,20 +139,35 @@ var app=new Vue({
           alert('注销成功')
           window.location.reload()
       },
-      getResume(){
+      getResume(user){
         var query = new AV.Query('User')
-        query.get(this.currentUser.objectId).then((user)=> {
+        query.get(user.objectId).then((user)=> {
           let resume=user.toJSON().resume
           Object.assign(this.resume,resume)
         })
       }
     }
   })
-let currentUser=AV.User.current()
-if(currentUser){
-  currentUser = currentUser.toJSON()
-  app.currentUser.objectId=currentUser.objectId
-  app.currentUser.email=currentUser.email
-  app.getResume()
-  app.shareLink=location.origin+ location.pathname+'?user_id='+app.currentUser.objectId
+
+let search=location.search
+let regex=/user_id=([^&]+)/
+let matches = search.match(regex)
+let userId
+if(matches){
+  userId=matches[1]
+  console.log(userId)
+}else{
+
+}
+if(userId){                             //游客预览
+  app.getResume({objectId:userId})
+  app.currentUser={objectId:undefined}
+  app.shareLink=location
+}else{                                  //用户自己
+    let currentUser=AV.User.current()
+    if(currentUser){
+    app.currentUser=currentUser.toJSON()
+    app.getResume(app.currentUser)
+    app.shareLink=location.origin+ location.pathname+'?user_id='+app.currentUser.objectId
+  }
 }

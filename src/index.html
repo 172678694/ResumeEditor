@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/signup.css">
     <link rel="stylesheet" href="./css/shareLink.css">
+    <link rel="stylesheet" href="./css/print.css" media="print">
+    <link rel="stylesheet" href="./css/skinPicker.css">
     <script src="//at.alicdn.com/t/font_1344485_msxeec4oqg.js"></script>
+
     <style>
     input{
         border:none;
@@ -18,8 +21,8 @@
     </style>
 </head>
 
-<body>
-    <div class="page" id="app">
+<body v-bind:class="mainClass">
+    <div class="page" id="app" >
         <aside>
             <div class="upper">
                 <ul>
@@ -30,10 +33,10 @@
                         <button @click="shareVisible=true">分享</button>
                     </li>
                     <li>
-                        <button>打印</button>
+                        <button @click="print">打印</button>
                     </li>
                     <li>
-                        <button>换肤</button>
+                        <button @click="skinPickerVisible=true">换肤</button>
                     </li>
                 </ul>
             </div>
@@ -145,11 +148,19 @@
                 <a @click="signUpVisible=false;logInVisible=true">登录</a>
             </form>
         </div>
-        <div v-show="shareVisible" class="shareLink">
-            <h2>请把下面链接分享给面试官</h2>
-            <textarea readonly>
-                {{shareLink}}
-            </textarea>
+        <div v-show="shareVisible" class="shareLink" v-cloak>
+            <div class="wrapper">
+                <h2>请把下面链接分享给面试官</h2>
+                <textarea readonly>
+                    {{shareLink}}
+                </textarea>
+                <span class="close" @click="shareVisible=false">x</span>
+            </div>
+        </div>
+        <div class="skinPicker" v-show="skinPickerVisible"  v-cloak>
+            <button @click="setTheme('default')">默认</button>
+            <button @click="setTheme('dark')">暗黑</button>
+            <span class="close" @click="skinPickerVisible=false">x</span>
         </div>
     </div>
     <script src="../vendors/av-min.js"></script>

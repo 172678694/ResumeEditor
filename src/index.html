@@ -15,158 +15,32 @@
     <script src="//at.alicdn.com/t/font_1344485_msxeec4oqg.js"></script>
 
     <style>
-    input{
-        border:none;
-    }
+
     </style>
 </head>
 
 <body v-bind:class="mainClass">
     <div class="page" id="app" >
-        <aside>
-            <div class="upper">
-                <ul>
-                    <li>
-                        <button @click="onClickSave">保存</button>
-                    </li>
-                    <li>
-                        <button @click="shareVisible=true">分享</button>
-                    </li>
-                    <li>
-                        <button @click="print">打印</button>
-                    </li>
-                    <li>
-                        <button @click="skinPickerVisible=true">换肤</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="down">
-                <button @click="onLogOut" v-show="!!currentUser.objectId">登出</button>
-            </div>
-        </aside>
+        <app-aside :mode="mode" :user="currentUser" @save="onClickSave" @share="onClickShare" @print="print" @change-skin="changeSkin" @logout="onLogOut"></app-aside>
         <main>
-            <div class="resume">
-                <section class="profile">
-                    <h1><editable-span v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span></h1>
-                    <p>应聘职位：<editable-span v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span></p>
-                    <p class="description">
-                        <editable-span v-bind:value="resume.birthday" v-on:edit="onEdit('birthday',$event)"></editable-span>
-                        | 
-                        <editable-span v-bind:value="resume.gender" v-on:edit="onEdit('gender',$event)"></editable-span>
-                        | 
-                        <editable-span v-bind:value="resume.email" v-on:edit="onEdit('email',$event)"></editable-span>
-                        | 
-                        <editable-span v-bind:value="resume.phone" v-on:edit="onEdit('phone',$event)"></editable-span>
-                    </p>
-                </section>
-                <section class="skill">
-                    <h2>技能</h2>
-                    <ul>
-                        <li v-for="skill,index in resume.skills" style="position: relative;">
-                            <editable-span v-bind:value="skill.name"  v-on:edit="onEdit(`skills[${index}].name`,$event)" class="name"></editable-span>
-                            <div class="description" >
-                                <editable-span v-bind:value="skill.description"  v-on:edit="onEdit(`skills[${index}].description`,$event)" ></editable-span>
-                            </div>
-                            <span class="remove" v-if="index>3" @click="removeSkill(index)" >删除</span>
-                        </li>
-                    </ul>
-                    <div class="addIcon" @click="addSkill">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-add"></use>
-                        </svg>
-                    </div>
-                </section>
-                <section class="project">
-                    <h2>项目经历</h2>
-                    <ol>
-                        <li v-for="project,index in resume.projects">
-                            <header>
-                                <div class="start">
-                                    <h3 class="name">
-                                        <editable-span v-bind:value="project.name" v-on:edit="onEdit(`projects[${index}].name`,$event)" ></editable-span>  
-                                    </h3>
-                                    <span class="link"><editable-span v-bind:value="project.link" v-on:edit="onEdit(`projects[${index}].link`,$event)" ></editable-span>  </span>
-                                </div>
-                                <div class="end">
-                                    <editable-span  class="keyword" v-bind:value="project.keyword" v-on:edit="onEdit(`projects[${index}].keyword`,$event)" ></editable-span>  
-                                </div>
-                            </header>
-                            <p class="description"><editable-span v-bind:value="project.description" v-on:edit="onEdit(`projects[${index}].description`,$event)" ></editable-span></p>
-                            <span class="remove" v-if="index>1" @click="removeProject(index)" >删除</span>
-                        </li>
-                    </ol>
-                    <div class="addIcon" @click="addProject" >
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-add"></use>
-                            </svg>
-                    </div>
-                </section>
-            </div>
+            <resume v-bind:mode="mode"></resume>  
         </main>
-        <div v-show="logInVisible" class="logIn" v-cloak>
-            <form class="logInForm" @submit.prevent="onLogIn">
-                    <h1>登录</h1>
-                    <div class="row">
-                        <label>用户名
-                            <input type="text" name="userName" v-model="logIn.userName">
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label>密码
-                            <input type="password" name="password" v-model="logIn.password">
-                        </label>
-                    </div>
-                    <div class="row">
-                        <input type="submit" value="提交">
-                    </div>
-                    <a @click="logInVisible=false">关闭</a>
-                    <a @click="signUpVisible=true;logInVisible=false">注册</a>
-            </form>
-        </div>
-        <div v-show="signUpVisible" class="signUp" v-cloak>
-            <form class="signUpForm"  @submit.prevent="onSignUp">
-                <h1>注册</h1>
-                <div class="row">
-                    <label>邮箱
-                        <input type="text" name="userName" v-model="signUp.email">
-                    </label>
-                </div>
-                <div class="row">
-                    <label>密码
-                        <input type="password" name="password" v-model="signUp.password">
-                    </label>
-                </div>
-                <div class="row">
-                        <label>确认密码
-                            <input type="password" name="password_confirmation" v-model="signUp.password_confirmation" >
-                        </label>
-                </div>
-                <div class="row">
-                    <button type="submit">提交</button>
-                </div>
-                <a @click="signUpVisible=false">关闭</a>
-                <a @click="signUpVisible=false;logInVisible=true">登录</a>
-            </form>
-        </div>
-        <div v-show="shareVisible" class="shareLink" v-cloak>
-            <div class="wrapper">
-                <h2>请把下面链接分享给面试官</h2>
-                <textarea readonly>
-                    {{shareLink}}
-                </textarea>
-                <span class="close" @click="shareVisible=false">x</span>
-            </div>
-        </div>
-        <div class="skinPicker" v-show="skinPickerVisible"  v-cloak>
-            <button @click="setTheme('default')">默认</button>
-            <button @click="setTheme('dark')">暗黑</button>
-            <span class="close" @click="skinPickerVisible=false">x</span>
-        </div>
+        <login v-show="logInVisible" @close-log-in="logInVisible=false" @login="onLogIn" v-on:xxx="signUpVisible=true;logInVisible=false"></login>
+        <signup v-show="signUpVisible" @close-sign-up="signUpVisible=false" @go-to-login="signUpVisible=false;logInVisible=true" @signup="onSignUp"></signup>
+        <share v-bind:share-link="shareLink" v-show="shareVisible" @close-sharing="shareVisible=false"></share>
+        <skin-picker v-show="skinPickerVisible" @close-skinpicker="skinPickerVisible=false"></skin-picker>
+        <button class='preview' v-if="mode==='preview'" @click="mode='edit'">退出预览</button>
     </div>
     <script src="../vendors/av-min.js"></script>
     <script src="./js/av.js"></script>
     <script src="../vendors/vue.min.js"></script>
     <script src="./js/editableSpan.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/share.js"></script>
+    <script src="./js/signup.js"></script>
+    <script src="./js/skinpicker.js"></script>
+    <script src="./js/resume.js"></script>
+    <script src="./js/app-aside.js"></script>
     <script src="./js/app.js"></script>
 </body>
 

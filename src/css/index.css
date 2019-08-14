@@ -8,7 +8,9 @@
 *::after {
     box-sizing: border-box;
 }
-
+input{
+    border:none;
+}
 ol,
 ul {
     list-style: none;
@@ -158,4 +160,9 @@ div[v-cloak] {
     border:1px solid #ddd;
     padding: 10px;
     cursor: pointer;
+}
+.preview{
+    position: fixed;
+    top:20px;
+    left: 20px;
 }

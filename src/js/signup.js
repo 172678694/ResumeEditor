@@ -1,4 +1,4 @@
-Vue.component('signup',{
+window.SignUp={
     props:[],
     data(){
         return {
@@ -31,8 +31,9 @@ Vue.component('signup',{
         <div class="row">
             <button type="submit">提交</button>
         </div>
-        <a @click="$emit('close-sign-up')">关闭</a>
-        <a @click="$emit('go-to-login')">登录</a>
+        <router-link to="/">关闭</router-link>
+        <router-link to="/login">登录</router-link>
+
     </form>
     </div>`,
     methods:{
@@ -56,7 +57,6 @@ Vue.component('signup',{
               }
             })
         }
-
-
     }
-})
+}
+Vue.component('signup',window.SignUp)

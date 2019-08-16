@@ -22,8 +22,5 @@ Vue.component('app-aside',{
         <button @click="$emit('logout')" v-show="!!user.objectId">登出</button>
     </div>
     </aside>
-    `,
-    methods:{
-
-    }
+    `
 })

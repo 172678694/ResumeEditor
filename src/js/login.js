@@ -34,7 +34,8 @@ window.Login={
             AV.User.logIn(this.logIn.userName, this.logIn.password).then((user)=>{
               // 登录成功
               alert('登录成功')
-              this.$emit('login',user)
+              this.$emit('loginSuccess',user)
+              this.$router.push('/')
             //   this.currentUser=user.toJSON()
             //   this.logInVisible=false
             //   window.location.reload()

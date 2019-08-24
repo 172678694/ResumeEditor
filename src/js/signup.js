@@ -49,6 +49,7 @@ window.SignUp={
             //   this.signUpVisible=false
             //   currentUser=user.toJSON()
             //   this.currentUser=currentUser
+              this.$router.push('/')
             }, (error)=>{
               console.dir(error)
               // 注册失败（通常是因为用户名已被使用）

@@ -3,7 +3,8 @@
 const routes = [
   { path: '/', component: window.App },
   { path: '/login', component: window.Login },
-  { path: '/signUp', component: window.SignUp }
+  { path: '/signUp', component: window.SignUp },
+  { path: '/share', component: window.Share }
 ]
 
 const router = new VueRouter({
@@ -15,10 +16,15 @@ const app = new Vue({
   el:'#root',
   data(){
     return{
-      currentUser:{}
+      currentUser:{},
+      shareLink:'',
+      resume:{}
     }
   }
 })
+
+
+
 
 
 
